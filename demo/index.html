@@ -16,55 +16,132 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../guide-ruler.html">
 
-    <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400' rel='stylesheet' type='text/css'>
 
     <style is="custom-style">
       body {
-        font-family: 'Roboto', sans-serif;
+        background-color:#FAFAFA;
+        font-family: Roboto, Noto, sans-serif;
       }
 
       guide-ruler.red {
         --guide-ruler-color: #f00;
       }
+      guide-ruler.green {
+        --guide-ruler-color: #690;
+      }
       guide-ruler.blue {
         --guide-ruler-color: #00f;
       }
+
+      .container {
+        padding: 20px;
+        max-width: 48em;
+        margin: 0 auto;
+      }
+
+      .card {
+        background-color: #FFF;
+        margin: 10px 0 24px;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+      .card header {
+        color: #212121;
+        padding: 14px 24px;
+        border-bottom: 1px solid #E5E5E5;
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 400;
+      }
+      .card .content {
+        font-size:14px;
+        padding: 14px 24px;
+      }
+      #event-output {
+        background-color: #FAFAFA;
+        border: solid #E5E5E5;
+        border-width: 1px 0;
+        color: #690;
+        font-weight: 500;
+        font-family: 'Inconsolata', 'Consolas', 'Source Code Pro', 'Monaco', 'Menlo', monospace;
+        -webkit-font-smoothing: antialiased;
+        line-height: 20px;
+        overflow-x: auto;
+        padding: 12px 24px;
+        margin-left: -24px;
+        margin-right: -24px;
+        font-size: 15px;
+      }
+      code {
+        background-color: #F9F2F4;
+        border-radius: 4px;
+        color:#905;
+        padding: 2px 4px;
+        font-size: 90%;
+      }
+
     </style>
   </head>
   <body>
 
-    <p>An example of <code>&lt;guide-ruler&gt;</code>:</p>
+    <div class="container">
 
-    <button>Say Something</button>
+      <section class="card">
+        <header>Demo</header>
+        <div class="content">
+          <p>Clicking on the measurement value will copy the number</p>
+          <p>Once a value is copied, the <code>measurement-copied</code> event will fire sending the selection text<p>
 
-    <div style="width: 320px;">
-      <guide-ruler></guide-ruler>
-    </div>
-    <div style="width: 480px;">
-      <guide-ruler class="red"></guide-ruler>
-    </div>
-    <div style="width: 768px;">
-      <guide-ruler class="blue"></guide-ruler>
-    </div>
-    <div style="width: 992px;">
-      <guide-ruler></guide-ruler>
-    </div>
-    <div style="width: 1200px;">
-      <guide-ruler></guide-ruler>
-    </div>
+          <div id="event-output">
+            Hint: Click a measurement
+          </div>
+        </div>
+      </section>
 
-    <guide-ruler measurement="10" measurement-units="dpi" author='{"name": "Lord Meowser", "image": "http://placekitten.com/g/200/300"}' fancy>
-      <h2>Hello guide-ruler</h2>
-    </guide-ruler>
+      <section class="card">
+        <header>Sizing</header>
+        <div class="content">
+          <p>By default, the guide-ruler will be full width of the container you put it in.</p>
+          <guide-ruler></guide-ruler>
 
-    <div style="width: 480px;">
-      <guide-ruler class="red"></guide-ruler>
-      <img src="http://placehold.it/480x150" alt="placehold.it" />
+          <p>Placed inside a <code>450px</code> wide container</p>
+          <div style="width: 450px;">
+            <guide-ruler></guide-ruler>
+          </div>
+
+          <p>Specify your own measurement value and units</p>
+          <div style="width: 320px;">
+            <guide-ruler measurement="10" measurement-units="dpi"></guide-ruler>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <header>Styling</header>
+        <div class="content">
+          <p>Using the CSS variable <code>--guide-ruler-color</code> we can set the color of the ruler with ease</p>
+          <guide-ruler class="red"></guide-ruler>
+          <guide-ruler class="green"></guide-ruler>
+          <guide-ruler class="blue"></guide-ruler>
+        </div>
+      </section>
+
+      <section class="card">
+        <header>Measuring</header>
+        <div class="content">
+          <p>To measure an element, just place the guide-ruler and the element to measure in an float or inline element.</p>
+          <div style="width: 480px;">
+            <guide-ruler class="red"></guide-ruler>
+            <img src="http://placehold.it/480x150" alt="placehold.it" />
+          </div>
+        </div>
+      </section>
+
     </div>
 
     <script>
-      document.querySelector('button').addEventListener('click', function() {
-        alert(document.querySelector('guide-ruler').sayHello('Hallo!'));
+      document.addEventListener('measurement-copied', function(e){
+        document.getElementById('event-output').innerHTML = '\'measurement-copied\' event fired - selected text: ' + e.detail.selection;
       });
     </script>
 
