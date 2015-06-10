@@ -1,19 +1,19 @@
 {
-  "name": "seed-element",
-  "version": "1.0.0",
+  "name": "guide-ruler",
+  "version": "0.0.1",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Aaron Layton <aaron.r.layton@gmail.com>"
   ],
   "description": "An element providing a solution to no problem in particular.",
   "keywords": [
     "web-component",
     "web-components",
     "polymer",
-    "seed"
+    "measure"
   ],
-  "main": "seed-element.html",
+  "main": "guide-ruler.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "homepage": "https://github.com/StyleGuideComponents/guide-ruler/",
   "ignore": [
     "/.*",
     "/test/",

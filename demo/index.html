@@ -12,23 +12,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>seed-element Demo</title>
+    <title>guide-ruler Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="../seed-element.html">
+    <link rel="import" href="../guide-ruler.html">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+
+    <style is="custom-style">
+      body {
+        font-family: 'Roboto', sans-serif;
+      }
+
+      guide-ruler.red {
+        --guide-ruler-color: #f00;
+      }
+      guide-ruler.blue {
+        --guide-ruler-color: #00f;
+      }
+    </style>
   </head>
   <body>
 
-    <p>An example of <code>&lt;seed-element&gt;</code>:</p>
+    <p>An example of <code>&lt;guide-ruler&gt;</code>:</p>
 
     <button>Say Something</button>
 
-    <seed-element author='{"name": "Lord Meowser", "image": "http://placekitten.com/g/200/300"}' fancy>
-      <h2>Hello seed-element</h2>
-    </seed-element>
+    <div style="width: 320px;">
+      <guide-ruler></guide-ruler>
+    </div>
+    <div style="width: 480px;">
+      <guide-ruler class="red"></guide-ruler>
+    </div>
+    <div style="width: 768px;">
+      <guide-ruler class="blue"></guide-ruler>
+    </div>
+    <div style="width: 992px;">
+      <guide-ruler></guide-ruler>
+    </div>
+    <div style="width: 1200px;">
+      <guide-ruler></guide-ruler>
+    </div>
+
+    <guide-ruler measurement="10" measurement-units="dpi" author='{"name": "Lord Meowser", "image": "http://placekitten.com/g/200/300"}' fancy>
+      <h2>Hello guide-ruler</h2>
+    </guide-ruler>
+
+    <div style="width: 480px;">
+      <guide-ruler class="red"></guide-ruler>
+      <img src="http://placehold.it/480x150" alt="placehold.it" />
+    </div>
 
     <script>
       document.querySelector('button').addEventListener('click', function() {
-        alert(document.querySelector('seed-element').sayHello('Hallo!'));
+        alert(document.querySelector('guide-ruler').sayHello('Hallo!'));
       });
     </script>
 
