@@ -1,0 +1,307 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <guide-ruler
+        measurement="500"
+        measurement-units="dpi"></guide-ruler>
+
+### Styling
+The following custom properties and mixins are available for styling.
+
+Custom property | Description | Default
+----------------|-------------|---------
+`--guide-ruler-color` | Main color for text and lines | #999
+
+@hero hero.png
+@demo
+-->
+<dom-module id="guide-ruler">
+
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+
+      --guide-ruler-color: #999;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .ruler {
+      box-sizing: border-box;
+      color: var(--guide-ruler-color);
+    }
+
+    .ruler__measurement {
+      cursor: pointer;
+      font-size: 12px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 300ms cubic-bezier(.55,0,.1,1) 300ms forwards;
+    }
+    .ruler__measurement:hover {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      padding: 1px 4px;
+    }
+
+    hr {
+      box-sizing: border-box;
+      border: none;
+      border-bottom: 1px solid var(--guide-ruler-color); 
+      height: 0;
+      margin-top: 13px;
+      margin-bottom: 13px;
+      position: relative;
+      animation: revealWidth 300ms cubic-bezier(.55,0,.1,1);
+    }
+
+    hr::before {
+      box-sizing: border-box;
+      content: '';
+      border: none;
+      border-left: 1px solid var(--guide-ruler-color) !important;
+      border-right: 1px solid var(--guide-ruler-color) !important;
+      position: absolute;
+      height: 27px;
+      top: -13px;
+      width: 100%;
+      animation: revealEnds 600ms cubic-bezier(0,1,1,1);
+    }
+
+    @keyframes fadeUp {
+      from { 
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes revealWidth {
+      from { 
+        opacity: 0;
+        width: 0%; 
+      }
+      to {
+        opacity: 1;
+        width: 100%;
+      }
+    }
+
+    @keyframes revealEnds {
+      0% { 
+        opacity: 0;
+        max-height: 0;
+      }
+      50% {
+        opacity: 0;
+        top: 0;
+        max-height: 0;
+      }
+      100% {
+        opacity: 1;
+        top: -13px;
+        max-height: 27px;
+      }
+    }
+
+    .author img {
+      float: left;
+      margin-right: 5px;
+      max-height: 100px;
+      max-width: 100px;
+    }
+  </style>
+
+  <template>
+
+    <div id="ruler" class="ruler">
+
+      <div class="text-center">
+        <span class="ruler__measurement" on-click="copyMeasurement">
+          <span id="measurement_value" class="value">{{measurement}}</span><span hidden?={{measurementUnits}} class="units">{{measurementUnits}}</span>
+        </span>
+      </div>
+
+      <hr />
+    </div>
+
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'guide-ruler',
+
+    properties: {
+
+      /**
+       * `measurement` the width of the measurement depicted by the ruler.
+       */
+      measurement: {
+        type: Number,
+        reflectToAttribute: true,
+        value: 'auto'
+      },
+
+      /**
+       * `measurement` the width of the measurement depicted by the ruler.
+       */
+      measurementUnits: {
+        type: String,
+        reflectToAttribute: true,
+        value: 'px'
+      },
+
+      /**
+       * `fancy` indicates that the element should don a monocle and tophat,
+       * while checking its pocket watch.
+       */
+      fancy: Boolean,
+
+      /**
+       * Describes the author of the element, but is really just an excuse to
+       * show off JSDoc annotations.
+       *
+       * @type {{name: string, image: string}}
+       */
+      author: {
+        type: Object,
+        // Use `value` to provides a default value for a property, by setting it
+        // on your element's prototype.
+        //
+        // If you provide a function, as we do here, Polymer will call that
+        // _per element instance_.
+        //
+        // We do that to ensure that each element gets its own copy of the
+        // value, rather than having it shared across all instances (via the
+        // prototype).
+        value: function() {
+          return {
+            name:  'Dimitri Glazkov',
+            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
+          };
+        }
+      },
+
+    },
+
+    // Element Lifecycle
+
+    ready: function() {
+      // `ready` is called after all elements have been configured, but
+      // propagates bottom-up. This element's children are ready, but parents
+      // are not.
+      //
+      // This is the point where you should make modifications to the DOM (when
+      // necessary), or kick off any processes the element wants to perform.
+      console.log(this.$.ruler.clientWidth);
+    },
+
+    attached: function() {
+      // `attached` fires once the element and its parents have been inserted
+      // into a document.
+      //
+      // This is a good place to perform any work related to your element's
+      // visual state or active behavior (measuring sizes, beginning animations,
+      // loading resources, etc).
+
+
+      // offsetWidth was always returning as 0 - a delay of even 1ms seemed to
+      // fix this locally. Should Polymer.dom.flush() have worked here?
+      var self = this;
+      setTimeout(function(){
+        self.measurement = self.measurement || self.offsetWidth;
+      }, 1);
+    },
+
+    detached: function() {
+      // The analog to `attached`, `detached` fires when the element has been
+      // removed from a document.
+      //
+      // Use this to clean up anything you did in `attached`.
+    },
+
+    // Element Behavior
+
+    /**
+     * The `measurement-copied` event is fired whenever the user clicks the measurement value.
+     *
+     * @event measurement-copied
+     * @detail {{selection: String}}}
+     */
+
+    /**
+     * Sometimes it's just nice to say hi.
+     *
+     * @param {string} greeting A positive greeting.
+     */
+    sayHello: function(greeting) {
+      var response = greeting || 'Hello World!';
+      return 'guide-ruler says, ' + response;
+    },
+
+    /**
+     * Attempts to destroy this element's enemies with an any beam of light!
+     *
+     * Or, at least, dispatches an event in the vain hope that someone else will
+     * do the zapping.
+     */
+    fireLasers: function() {
+      this.fire('guide-ruler-lasers', {sound: 'Pew pew!'});
+    },
+
+    /**
+     * Copies the rulers measurement to the users clipboard.
+     * This will copy the number only and not the units.
+     */
+    copyMeasurement: function(){
+
+      var valueNode = this.$.measurement_value;  
+      var range = document.createRange();  
+      range.selectNode(valueNode);  
+      window.getSelection().addRange(range);  
+
+      try {  
+        // Now that we've selected the anchor text, execute the copy command  
+        var successful = document.execCommand('copy');  
+        var wasCopied = successful ? 'successful' : 'unsuccessful';  
+
+        if (wasCopied) {
+          this.fire('measurement-copied', {
+            selection: range.text
+          });
+        }
+      } catch(err) {  
+        console.log('Oops, unable to copy');  
+      }  
+
+      // Remove the selections - NOTE: Should use   
+      // removeRange(range) when it is supported  
+      window.getSelection().removeAllRanges();
+    }
+
+  });
+
+</script>

@@ -1,0 +1,29 @@
+{
+  "name": "guide-ruler",
+  "version": "0.0.1",
+  "authors": [
+    "Aaron Layton <aaron.r.layton@gmail.com>"
+  ],
+  "description": "An element providing a solution to no problem in particular.",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "measure"
+  ],
+  "main": "guide-ruler.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/StyleGuideComponents/guide-ruler/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  }
+}
